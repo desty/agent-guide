@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent 완벽 가이드 - From Zero to Multi-Agent</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="reading-progress" id="readingProgress"></div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#hero" class="nav-logo">
+                <span class="nav-logo-icon">A</span>
+                <span>Agent Guide</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#overview" class="nav-link">Overview</a>
+                <a href="#levels" class="nav-link">Levels</a>
+                <a href="#architecture" class="nav-link">Architecture</a>
+                <a href="#protocols" class="nav-link">Protocols</a>
+                <a href="#practice" class="nav-link">Practice</a>
+                <a href="#papers" class="nav-link">Papers</a>
+            </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="hero-grid"></div>
+            <div class="hero-glow hero-glow-1"></div>
+            <div class="hero-glow hero-glow-2"></div>
+        </div>
+        <div class="container hero-content">
+            <div class="hero-badge">2026 Complete Guide</div>
+            <h1 class="hero-title">
+                AI Agent<br>
+                <span class="hero-gradient">완벽 가이드</span>
+            </h1>
+            <p class="hero-subtitle">
+                단순 LLM 호출부터 멀티 에이전트 시스템까지<br>
+                7단계로 이해하는 AI Agent의 모든 것
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-number">7</span>
+                    <span class="hero-stat-label">Agent Levels</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">10+</span>
+                    <span class="hero-stat-label">핵심 논문</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-number">6</span>
+                    <span class="hero-stat-label">주요 프레임워크</span>
+                </div>
+            </div>
+            <div class="hero-actions">
+                <a href="#levels" class="btn btn-primary">레벨별 가이드 보기</a>
+                <a href="#overview" class="btn btn-secondary">Overview 먼저 보기</a>
+            </div>
+        </div>
+        <div class="hero-scroll">
+            <div class="hero-scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="section" id="overview">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Overview</span>
+                <h2 class="section-title">AI Agent란 무엇인가?</h2>
+                <p class="section-desc">Lilian Weng(OpenAI)의 정의에 따르면, AI Agent는 네 가지 핵심 요소의 조합입니다</p>
+            </div>
+
+            <!-- Agent = LLM + Memory + Planning + Tools -->
+            <div class="formula-card">
+                <div class="formula">
+                    <span class="formula-item formula-agent">Agent</span>
+                    <span class="formula-op">=</span>
+                    <span class="formula-item formula-llm">LLM</span>
+                    <span class="formula-op">+</span>
+                    <span class="formula-item formula-memory">Memory</span>
+                    <span class="formula-op">+</span>
+                    <span class="formula-item formula-planning">Planning</span>
+                    <span class="formula-op">+</span>
+                    <span class="formula-item formula-tools">Tools</span>
+                </div>
+                <p class="formula-source">Source: Lilian Weng, "LLM Powered Autonomous Agents" (June 2023)</p>
+            </div>
+
+            <!-- 4 Components -->
+            <div class="components-grid">
+                <div class="component-card" data-color="blue">
+                    <div class="component-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 0 1 7 7c0 3-2 5.5-4 7.5L12 22l-3-5.5C7 14.5 5 12 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2"/></svg>
+                    </div>
+                    <h3>LLM (두뇌)</h3>
+                    <p>추론과 의사결정의 핵심 엔진. 자연어를 이해하고, 계획을 세우고, 도구 사용을 결정합니다.</p>
+                    <div class="component-tag">Core Engine</div>
+                </div>
+                <div class="component-card" data-color="purple">
+                    <div class="component-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M6 14h12"/></svg>
+                    </div>
+                    <h3>Memory (기억)</h3>
+                    <p>단기 기억(컨텍스트 윈도우)과 장기 기억(벡터 DB). 경험을 축적하고 과거를 참조합니다.</p>
+                    <div class="component-tag">State Management</div>
+                </div>
+                <div class="component-card" data-color="green">
+                    <div class="component-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12l2 2 4-4"/></svg>
+                    </div>
+                    <h3>Planning (계획)</h3>
+                    <p>작업 분해(Task Decomposition)와 자기 반성(Reflection). 복잡한 목표를 실행 가능한 단계로 쪼갭니다.</p>
+                    <div class="component-tag">Strategy</div>
+                </div>
+                <div class="component-card" data-color="orange">
+                    <div class="component-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                    </div>
+                    <h3>Tools (도구)</h3>
+                    <p>외부 API, 검색 엔진, 코드 실행기 등. LLM의 능력을 실제 세계로 확장합니다.</p>
+                    <div class="component-tag">External Actions</div>
+                </div>
+            </div>
+
+            <!-- Workflow vs Agent -->
+            <div class="comparison-section">
+                <h3 class="subsection-title">Workflow vs Agent: 핵심 구분</h3>
+                <p class="subsection-desc">Anthropic의 "Building Effective Agents"(2024)에서는 Workflow와 Agent를 명확히 구분합니다</p>
+                <div class="comparison-table">
+                    <div class="comparison-col comparison-workflow">
+                        <div class="comparison-header">
+                            <h4>Workflow</h4>
+                            <span class="comparison-badge">Deterministic</span>
+                        </div>
+                        <ul>
+                            <li>실행 흐름이 <strong>코드로 미리 정의</strong>됨</li>
+                            <li>같은 입력 = 같은 경로</li>
+                            <li>예측 가능하고 디버깅이 쉬움</li>
+                            <li>대부분의 비즈니스 문제에 적합</li>
+                            <li>비용이 예측 가능</li>
+                        </ul>
+                        <div class="comparison-example">
+                            <strong>예시:</strong> 문서 번역 파이프라인, 이메일 분류 시스템
+                        </div>
+                    </div>
+                    <div class="comparison-vs">vs</div>
+                    <div class="comparison-col comparison-agent">
+                        <div class="comparison-header">
+                            <h4>Agent</h4>
+                            <span class="comparison-badge">Dynamic</span>
+                        </div>
+                        <ul>
+                            <li>실행 흐름을 <strong>LLM이 동적으로 결정</strong></li>
+                            <li>같은 입력이라도 다른 경로 가능</li>
+                            <li>관찰(Observability) 도구 필요</li>
+                            <li>Open-ended 문제에 강함</li>
+                            <li>비용이 가변적</li>
+                        </ul>
+                        <div class="comparison-example">
+                            <strong>예시:</strong> 코드 디버깅 에이전트, 리서치 에이전트
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Levels Section -->
+    <section class="section section-dark" id="levels">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Levels 0-6</span>
+                <h2 class="section-title">Agent 성숙도 7단계</h2>
+                <p class="section-desc">단순 LLM 호출부터 멀티 에이전트 시스템까지, 각 레벨의 구조와 특징을 살펴봅니다</p>
+            </div>
+
+            <!-- Level Progress Bar -->
+            <div class="level-progress">
+                <div class="level-progress-track">
+                    <div class="level-progress-fill"></div>
+                </div>
+                <div class="level-progress-labels">
+                    <span>Simple</span>
+                    <span>Autonomous</span>
+                    <span>Multi-Agent</span>
+                </div>
+            </div>
+
+            <!-- Level 0 -->
+            <div class="level-card" id="level-0" data-level="0">
+                <div class="level-header">
+                    <div class="level-badge">L0</div>
+                    <div class="level-info">
+                        <h3>Simple LLM Call</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-red">No Tools</span>
+                            <span class="tag tag-red">No Memory</span>
+                            <span class="tag tag-gray">Single Turn</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:5%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>가장 기본적인 형태입니다. 프롬프트를 넣으면 응답이 나오는 단순 호출로, LLM의 학습된 지식만으로 답변합니다. 외부 도구 접근이 없어 <strong>할루시네이션 리스크가 가장 높습니다.</strong></p>
+                    </div>
+
+                    <!-- Architecture Diagram -->
+                    <div class="arch-diagram">
+                        <div class="arch-flow">
+                            <div class="arch-node arch-user">
+                                <div class="arch-node-icon">U</div>
+                                <span>User</span>
+                            </div>
+                            <div class="arch-arrow">
+                                <span>Prompt</span>
+                            </div>
+                            <div class="arch-node arch-llm">
+                                <div class="arch-node-icon">L</div>
+                                <span>LLM</span>
+                            </div>
+                            <div class="arch-arrow">
+                                <span>Response</span>
+                            </div>
+                            <div class="arch-node arch-output">
+                                <div class="arch-node-icon">R</div>
+                                <span>Output</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="level-details">
+                        <div class="detail-col">
+                            <h4>사용 예시</h4>
+                            <ul>
+                                <li>"이메일 초안 써줘"</li>
+                                <li>"이 코드 리뷰해줘"</li>
+                                <li>"마케팅 카피 만들어줘"</li>
+                            </ul>
+                        </div>
+                        <div class="detail-col">
+                            <h4>한계</h4>
+                            <ul>
+                                <li>최신 정보 접근 불가</li>
+                                <li>사내 데이터 참조 불가</li>
+                                <li>정보를 지어낼 수 있음</li>
+                            </ul>
+                        </div>
+                        <div class="detail-col">
+                            <h4>관련 기술</h4>
+                            <ul>
+                                <li>Chain-of-Thought (Wei et al., 2022)</li>
+                                <li>Zero-shot / Few-shot Prompting</li>
+                                <li>기본 ChatGPT / Claude 호출</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 1 -->
+            <div class="level-card" id="level-1" data-level="1">
+                <div class="level-header">
+                    <div class="level-badge">L1</div>
+                    <div class="level-info">
+                        <h3>Augmented LLM (Tool Use)</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-blue">Function Calling</span>
+                            <span class="tag tag-blue">RAG</span>
+                            <span class="tag tag-gray">Single Cycle</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:20%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>LLM이 필요할 때 <strong>외부 도구를 한 번 호출</strong>할 수 있습니다. 도구를 쓸지 말지를 LLM이 판단하고, 결과를 받아 최종 응답을 생성합니다. 하지만 <strong>한 번의 사이클로 끝나며</strong>, 결과가 부족해도 재시도하지 않습니다.</p>
+                    </div>
+
+                    <div class="arch-diagram">
+                        <div class="arch-flow">
+                            <div class="arch-node arch-user">
+                                <div class="arch-node-icon">U</div>
+                                <span>User</span>
+                            </div>
+                            <div class="arch-arrow"><span>Query</span></div>
+                            <div class="arch-node arch-llm arch-node-lg">
+                                <div class="arch-node-icon">L</div>
+                                <span>LLM</span>
+                                <div class="arch-sub-nodes">
+                                    <div class="arch-tool-call">
+                                        <span class="arch-tool-label">Tool Call</span>
+                                        <div class="arch-mini-arrow"></div>
+                                        <div class="arch-node-mini arch-tool">API / DB / Search</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="arch-arrow"><span>Response</span></div>
+                            <div class="arch-node arch-output">
+                                <div class="arch-node-icon">R</div>
+                                <span>Output</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="level-details">
+                        <div class="detail-col">
+                            <h4>도구 유형</h4>
+                            <ul>
+                                <li><strong>검색:</strong> RAG, 웹 검색</li>
+                                <li><strong>API:</strong> 날씨, 주가, DB 쿼리</li>
+                                <li><strong>실행:</strong> 코드 인터프리터, 계산기</li>
+                            </ul>
+                        </div>
+                        <div class="detail-col">
+                            <h4>사용 예시</h4>
+                            <ul>
+                                <li>"오늘 서울 날씨 알려줘" &rarr; weather API</li>
+                                <li>"Q3 매출 데이터 찾아줘" &rarr; DB 쿼리</li>
+                                <li>Naive RAG: 벡터 검색 &rarr; 답변 생성</li>
+                            </ul>
+                        </div>
+                        <div class="detail-col">
+                            <h4>관련 기술</h4>
+                            <ul>
+                                <li>Toolformer (Schick et al., 2023)</li>
+                                <li>MRKL Systems (Karpas et al., 2022)</li>
+                                <li>Function Calling / Structured Output</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="level-card" id="level-2" data-level="2">
+                <div class="level-header">
+                    <div class="level-badge">L2</div>
+                    <div class="level-info">
+                        <h3>Chained / Sequential Agent</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-green">Pipeline</span>
+                            <span class="tag tag-green">Deterministic</span>
+                            <span class="tag tag-gray">Multi-Step</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:30%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>여러 단계를 <strong>미리 정의된 순서대로</strong> 실행합니다. 앞 단계의 출력이 뒷 단계의 입력이 됩니다. Gate(검증 단계)를 넣어 품질을 체크할 수 있지만, 전체 흐름은 코드로 고정되어 있습니다.</p>
+                    </div>
+
+                    <div class="arch-diagram">
+                        <div class="arch-pipeline">
+                            <div class="pipe-node">
+                                <div class="pipe-icon">1</div>
+                                <span>분석</span>
+                            </div>
+                            <div class="pipe-connector">
+                                <div class="pipe-line"></div>
+                                <div class="pipe-arrow-head"></div>
+                            </div>
+                            <div class="pipe-node">
+                                <div class="pipe-icon">2</div>
+                                <span>처리</span>
+                            </div>
+                            <div class="pipe-connector">
+                                <div class="pipe-line"></div>
+                                <div class="pipe-arrow-head"></div>
+                            </div>
+                            <div class="pipe-gate">
+                                <div class="pipe-icon">G</div>
+                                <span>검증</span>
+                            </div>
+                            <div class="pipe-connector">
+                                <div class="pipe-line"></div>
+                                <div class="pipe-arrow-head"></div>
+                            </div>
+                            <div class="pipe-node">
+                                <div class="pipe-icon">3</div>
+                                <span>출력</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-cards">
+                        <div class="example-card">
+                            <h5>문서 번역 파이프라인</h5>
+                            <div class="pipeline-steps">
+                                <span>원문 분석</span>
+                                <span class="step-arrow">&rarr;</span>
+                                <span>초벌 번역</span>
+                                <span class="step-arrow">&rarr;</span>
+                                <span>용어 검증</span>
+                                <span class="step-arrow">&rarr;</span>
+                                <span>최종 다듬기</span>
+                            </div>
+                        </div>
+                        <div class="example-card">
+                            <h5>코드 생성 파이프라인</h5>
+                            <div class="pipeline-steps">
+                                <span>요구사항</span>
+                                <span class="step-arrow">&rarr;</span>
+                                <span>코드 생성</span>
+                                <span class="step-arrow">&rarr;</span>
+                                <span>린트/테스트</span>
+                                <span class="step-arrow">&rarr;</span>
+                                <span>리뷰/수정</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="level-details">
+                        <div class="detail-col">
+                            <h4>특징</h4>
+                            <ul>
+                                <li>실행 순서가 코드로 고정 (deterministic)</li>
+                                <li>각 단계에서 LLM이 동작하지만 전체 흐름은 LLM이 결정하지 않음</li>
+                                <li>Latency = 각 단계의 합산</li>
+                            </ul>
+                        </div>
+                        <div class="detail-col">
+                            <h4>한계</h4>
+                            <ul>
+                                <li>분기(branching)가 없음</li>
+                                <li>간단한 요청도 전체 파이프라인 통과 필요</li>
+                                <li>한 단계 실패 시 전체 중단</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="level-card" id="level-3" data-level="3">
+                <div class="level-header">
+                    <div class="level-badge">L3</div>
+                    <div class="level-info">
+                        <h3>Router / Branching Agent</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-yellow">Dynamic Routing</span>
+                            <span class="tag tag-yellow">Classifier</span>
+                            <span class="tag tag-gray">Parallel</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:45%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>입력을 분석해서 <strong>적절한 경로로 분기</strong>합니다. LLM이 분류기(classifier) 역할을 수행하며, 각 브랜치는 독립적인 워크플로우입니다. 리소스 효율적이고 병렬 실행도 가능합니다.</p>
+                    </div>
+
+                    <div class="arch-diagram">
+                        <div class="arch-router">
+                            <div class="router-input">
+                                <div class="arch-node arch-user">
+                                    <div class="arch-node-icon">U</div>
+                                    <span>Input</span>
+                                </div>
+                            </div>
+                            <div class="router-center">
+                                <div class="arch-node arch-llm">
+                                    <div class="arch-node-icon">R</div>
+                                    <span>Router</span>
+                                </div>
+                            </div>
+                            <div class="router-branches">
+                                <div class="branch branch-a">
+                                    <div class="branch-line"></div>
+                                    <div class="branch-node">
+                                        <span class="branch-label">Simple</span>
+                                        <span class="branch-desc">직접 답변</span>
+                                    </div>
+                                </div>
+                                <div class="branch branch-b">
+                                    <div class="branch-line"></div>
+                                    <div class="branch-node">
+                                        <span class="branch-label">Data</span>
+                                        <span class="branch-desc">검색 파이프라인</span>
+                                    </div>
+                                </div>
+                                <div class="branch branch-c">
+                                    <div class="branch-line"></div>
+                                    <div class="branch-node">
+                                        <span class="branch-label">Code</span>
+                                        <span class="branch-desc">코드 생성</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-cards">
+                        <div class="example-card">
+                            <h5>고객 지원 시스템</h5>
+                            <div class="router-example">
+                                <div class="router-ex-input">고객 메시지</div>
+                                <div class="router-ex-branches">
+                                    <div>"환불 요청" &rarr; 환불 처리 워크플로우</div>
+                                    <div>"기술 문의" &rarr; 기술 지원 워크플로우</div>
+                                    <div>"일반 문의" &rarr; FAQ 기반 응답</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 4 - Key level -->
+            <div class="level-card level-card-highlight" id="level-4" data-level="4">
+                <div class="level-header">
+                    <div class="level-badge">L4</div>
+                    <div class="level-info">
+                        <h3>ReAct / Loop Agent</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-purple">True Agent</span>
+                            <span class="tag tag-purple">Self-Correction</span>
+                            <span class="tag tag-purple">Autonomous Loop</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:65%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-milestone">여기서부터 진정한 Agent입니다</div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>LLM이 <strong>루프를 돌면서 스스로 판단하고, 도구를 선택하고, 결과를 평가하고, 필요하면 다시 시도</strong>합니다. ReAct(Reasoning + Acting) 패턴이 핵심이며, 종료 조건도 LLM이 판단합니다.</p>
+                    </div>
+
+                    <div class="arch-diagram">
+                        <div class="arch-react-loop">
+                            <div class="react-cycle">
+                                <div class="react-loop-back">
+                                    <span class="loop-label">반복</span>
+                                </div>
+                                <div class="react-nodes-row">
+                                    <div class="react-node react-think">
+                                        <div class="react-icon">T</div>
+                                        <span>Thought</span>
+                                        <p>상황 분석 & 판단</p>
+                                    </div>
+                                    <div class="react-arrow"></div>
+                                    <div class="react-node react-act">
+                                        <div class="react-icon">A</div>
+                                        <span>Action</span>
+                                        <p>도구 선택 & 실행</p>
+                                    </div>
+                                    <div class="react-arrow"></div>
+                                    <div class="react-node react-observe">
+                                        <div class="react-icon">O</div>
+                                        <span>Observe</span>
+                                        <p>결과 확인 & 평가</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="react-exit">
+                                <div class="react-exit-arrow"></div>
+                                <div class="react-node react-answer">
+                                    <div class="react-icon">!</div>
+                                    <span>Answer</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ReAct Example -->
+                    <div class="react-example">
+                        <h4>ReAct 실행 예시: 리서치 에이전트</h4>
+                        <div class="react-trace">
+                            <div class="trace-step trace-thought">
+                                <div class="trace-label">Thought</div>
+                                <div class="trace-content">사용자가 2024년 한국 GDP를 묻고 있다. 최신 데이터니까 검색이 필요하다.</div>
+                            </div>
+                            <div class="trace-step trace-action">
+                                <div class="trace-label">Action</div>
+                                <div class="trace-content"><code>web_search("2024 한국 GDP")</code></div>
+                            </div>
+                            <div class="trace-step trace-observe">
+                                <div class="trace-label">Observe</div>
+                                <div class="trace-content">검색 결과가 2023년 데이터뿐이다. 더 최신 쿼리가 필요.</div>
+                            </div>
+                            <div class="trace-step trace-thought">
+                                <div class="trace-label">Thought</div>
+                                <div class="trace-content">쿼리를 변경해서 재검색하자.</div>
+                            </div>
+                            <div class="trace-step trace-action">
+                                <div class="trace-label">Action</div>
+                                <div class="trace-content"><code>web_search("South Korea GDP 2024 IMF estimate")</code></div>
+                            </div>
+                            <div class="trace-step trace-observe">
+                                <div class="trace-label">Observe</div>
+                                <div class="trace-content">IMF 기준 1.7조 달러라는 결과 확인. 신뢰할 만한 출처.</div>
+                            </div>
+                            <div class="trace-step trace-answer">
+                                <div class="trace-label">Answer</div>
+                                <div class="trace-content">2024년 한국 GDP는 IMF 추정 기준 약 1.7조 달러입니다...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="level-details">
+                        <div class="detail-col">
+                            <h4>핵심 특징</h4>
+                            <ul>
+                                <li>LLM이 실행 흐름을 제어</li>
+                                <li>자기 수정(self-correction) 가능</li>
+                                <li>종료 조건을 LLM이 판단</li>
+                                <li>max_iterations 설정 필수</li>
+                            </ul>
+                        </div>
+                        <div class="detail-col">
+                            <h4>관련 논문</h4>
+                            <ul>
+                                <li>ReAct (Yao et al., 2022) - ICLR 2023</li>
+                                <li>Reflexion (Shinn et al., 2023)</li>
+                                <li>Tree of Thoughts (Yao et al., 2023)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 5 -->
+            <div class="level-card" id="level-5" data-level="5">
+                <div class="level-header">
+                    <div class="level-badge">L5</div>
+                    <div class="level-info">
+                        <h3>Planning Agent</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-cyan">Task Decomposition</span>
+                            <span class="tag tag-cyan">Adaptive Replanning</span>
+                            <span class="tag tag-cyan">Reflection</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:80%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>실행 전에 먼저 <strong>전체 계획을 세우고</strong>, 계획에 따라 단계별로 실행하며, 상황에 따라 <strong>계획을 동적으로 수정</strong>합니다. 장기 목표(long-horizon task) 처리가 가능합니다.</p>
+                    </div>
+
+                    <div class="arch-diagram">
+                        <div class="arch-planning">
+                            <div class="planning-phase planning-plan">
+                                <div class="planning-icon">P</div>
+                                <h5>Plan</h5>
+                                <p>작업 분해</p>
+                                <div class="planning-tasks">
+                                    <span>Task 1</span>
+                                    <span>Task 2</span>
+                                    <span>Task 3</span>
+                                    <span>Task 4</span>
+                                </div>
+                            </div>
+                            <div class="planning-arrows">
+                                <div class="planning-arrow-down"></div>
+                            </div>
+                            <div class="planning-phase planning-execute">
+                                <div class="planning-icon">E</div>
+                                <h5>Execute</h5>
+                                <p>단계별 ReAct 실행</p>
+                            </div>
+                            <div class="planning-arrows">
+                                <div class="planning-arrow-down"></div>
+                            </div>
+                            <div class="planning-phase planning-reflect">
+                                <div class="planning-icon">R</div>
+                                <h5>Reflect</h5>
+                                <p>결과 평가 & 계획 수정</p>
+                            </div>
+                            <div class="planning-replan">
+                                <div class="replan-arrow"></div>
+                                <span>Re-plan</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-cards">
+                        <div class="example-card example-card-wide">
+                            <h5>"경쟁사 분석 보고서 만들어줘"</h5>
+                            <div class="plan-execution">
+                                <div class="plan-step plan-done">
+                                    <span class="plan-check">&#10003;</span>
+                                    <span>1. 경쟁사 리스트 확정</span>
+                                </div>
+                                <div class="plan-step plan-failed">
+                                    <span class="plan-x">&#10007;</span>
+                                    <span>2. 재무 데이터 수집</span>
+                                    <span class="plan-note">회사 B 데이터 못 찾음</span>
+                                </div>
+                                <div class="plan-step plan-replan">
+                                    <span class="plan-refresh">&#8635;</span>
+                                    <span>2'. Re-plan: 대안 소스에서 재검색</span>
+                                </div>
+                                <div class="plan-step plan-done">
+                                    <span class="plan-check">&#10003;</span>
+                                    <span>2'. 대안 소스에서 수집 완료</span>
+                                </div>
+                                <div class="plan-step plan-pending">
+                                    <span class="plan-dot">&#9679;</span>
+                                    <span>3. SWOT 분석</span>
+                                </div>
+                                <div class="plan-step plan-pending">
+                                    <span class="plan-dot">&#9679;</span>
+                                    <span>4. 보고서 작성</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level 6 -->
+            <div class="level-card" id="level-6" data-level="6">
+                <div class="level-header">
+                    <div class="level-badge">L6</div>
+                    <div class="level-info">
+                        <h3>Multi-Agent System</h3>
+                        <div class="level-tags">
+                            <span class="tag tag-pink">Collaboration</span>
+                            <span class="tag tag-pink">Specialization</span>
+                            <span class="tag tag-pink">Distributed</span>
+                        </div>
+                    </div>
+                    <div class="level-autonomy">
+                        <span class="autonomy-label">자율성</span>
+                        <div class="autonomy-bar"><div class="autonomy-fill" style="width:95%"></div></div>
+                    </div>
+                </div>
+
+                <div class="level-body">
+                    <div class="level-desc">
+                        <p>여러 에이전트가 각자의 역할, 도구, 프롬프트를 가지고 <strong>협업</strong>합니다. Orchestrator가 작업을 분배하고 결과를 통합하며, 각 에이전트가 독립된 컨텍스트를 가져 <strong>컨텍스트 윈도우 한계를 완화</strong>합니다.</p>
+                    </div>
+
+                    <div class="arch-diagram">
+                        <div class="arch-multi-agent">
+                            <div class="ma-orchestrator">
+                                <div class="ma-node ma-orch">
+                                    <div class="ma-icon">O</div>
+                                    <span>Orchestrator</span>
+                                </div>
+                            </div>
+                            <div class="ma-connections">
+                                <div class="ma-line ma-line-1"></div>
+                                <div class="ma-line ma-line-2"></div>
+                                <div class="ma-line ma-line-3"></div>
+                                <div class="ma-line ma-line-4"></div>
+                            </div>
+                            <div class="ma-workers">
+                                <div class="ma-worker">
+                                    <div class="ma-node ma-research">
+                                        <div class="ma-icon">R</div>
+                                        <span>Researcher</span>
+                                    </div>
+                                    <div class="ma-tools">Search, Fetch</div>
+                                </div>
+                                <div class="ma-worker">
+                                    <div class="ma-node ma-coder">
+                                        <div class="ma-icon">C</div>
+                                        <span>Coder</span>
+                                    </div>
+                                    <div class="ma-tools">IDE, Terminal</div>
+                                </div>
+                                <div class="ma-worker">
+                                    <div class="ma-node ma-reviewer">
+                                        <div class="ma-icon">Q</div>
+                                        <span>Reviewer</span>
+                                    </div>
+                                    <div class="ma-tools">Lint, Test</div>
+                                </div>
+                                <div class="ma-worker">
+                                    <div class="ma-node ma-writer">
+                                        <div class="ma-icon">W</div>
+                                        <span>Writer</span>
+                                    </div>
+                                    <div class="ma-tools">Docs, Format</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multi-agent patterns -->
+                    <div class="patterns-grid">
+                        <div class="pattern-card">
+                            <h5>Orchestrator-Worker</h5>
+                            <p>중앙 관리자가 작업을 분배하고 결과를 통합. 가장 일반적인 패턴.</p>
+                            <div class="pattern-example">Claude Code의 sub-agents</div>
+                        </div>
+                        <div class="pattern-card">
+                            <h5>Evaluator-Optimizer</h5>
+                            <p>Generator가 생성, Evaluator가 평가 후 피드백. 반복적 개선.</p>
+                            <div class="pattern-example">코드 리뷰 자동화</div>
+                        </div>
+                        <div class="pattern-card">
+                            <h5>Debate / Adversarial</h5>
+                            <p>Agent A가 주장, Agent B가 반론. Moderator가 최종 판정.</p>
+                            <div class="pattern-example">의사결정 지원 시스템</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level Comparison Table -->
+            <div class="comparison-table-section">
+                <h3 class="subsection-title">단계별 비교 요약</h3>
+                <div class="table-wrapper">
+                    <table class="level-table">
+                        <thead>
+                            <tr>
+                                <th>레벨</th>
+                                <th>자율성</th>
+                                <th>도구 사용</th>
+                                <th>흐름 결정</th>
+                                <th>대표 기술</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="table-badge">L0</span></td>
+                                <td>없음</td>
+                                <td>없음</td>
+                                <td>코드</td>
+                                <td>ChatGPT 기본 호출</td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-badge">L1</span></td>
+                                <td>낮음</td>
+                                <td>단일 턴</td>
+                                <td>코드</td>
+                                <td>RAG, Function Calling</td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-badge">L2</span></td>
+                                <td>낮음</td>
+                                <td>순차</td>
+                                <td>코드</td>
+                                <td>LangChain Chains</td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-badge">L3</span></td>
+                                <td>중간</td>
+                                <td>분기</td>
+                                <td>코드+LLM</td>
+                                <td>Semantic Router</td>
+                            </tr>
+                            <tr class="table-highlight">
+                                <td><span class="table-badge badge-highlight">L4</span></td>
+                                <td>높음</td>
+                                <td>루프</td>
+                                <td>LLM</td>
+                                <td>ReAct, Claude Tool Use</td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-badge">L5</span></td>
+                                <td>높음</td>
+                                <td>계획+루프</td>
+                                <td>LLM</td>
+                                <td>Plan-and-Execute, ADK</td>
+                            </tr>
+                            <tr>
+                                <td><span class="table-badge">L6</span></td>
+                                <td>매우 높음</td>
+                                <td>분산</td>
+                                <td>다수 LLM</td>
+                                <td>CrewAI, AutoGen</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Deep Dive -->
+    <section class="section" id="architecture">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Deep Dive</span>
+                <h2 class="section-title">핵심 아키텍처 개념</h2>
+                <p class="section-desc">에이전트 시스템의 내부를 구성하는 핵심 개념들</p>
+            </div>
+
+            <!-- Memory Architecture -->
+            <div class="deep-dive-card">
+                <div class="dd-header">
+                    <h3>Agent Memory 시스템</h3>
+                    <span class="dd-tag">Core Component</span>
+                </div>
+                <div class="dd-body">
+                    <p>인간의 기억 체계에서 영감을 받은 에이전트 메모리 시스템은 세 가지 유형으로 나뉩니다.</p>
+                    <div class="memory-arch">
+                        <div class="memory-type">
+                            <div class="memory-icon memory-short">S</div>
+                            <h4>Short-term Memory</h4>
+                            <p>컨텍스트 윈도우 내의 작업 기억. 현재 대화와 즉시 필요한 정보를 유지합니다.</p>
+                            <div class="memory-impl">구현: Context Window, Working Memory</div>
+                        </div>
+                        <div class="memory-type">
+                            <div class="memory-icon memory-long">L</div>
+                            <h4>Long-term Memory</h4>
+                            <p>세션을 넘어 지속되는 기억. 사실, 정의, 규칙 등 구조화된 지식을 저장합니다.</p>
+                            <div class="memory-impl">구현: Vector DB, Knowledge Graph</div>
+                        </div>
+                        <div class="memory-type">
+                            <div class="memory-icon memory-episodic">E</div>
+                            <h4>Episodic Memory</h4>
+                            <p>과거 경험과 에피소드를 기록. 유사한 상황에서 과거 경험을 참조합니다.</p>
+                            <div class="memory-impl">구현: Vector DB + Semantic Retrieval</div>
+                        </div>
+                    </div>
+                    <div class="dd-source">Source: Park et al., "Generative Agents" (2023) | IBM, "AI Agent Memory" (2025)</div>
+                </div>
+            </div>
+
+            <!-- Agentic RAG -->
+            <div class="deep-dive-card">
+                <div class="dd-header">
+                    <h3>Agentic RAG vs Traditional RAG</h3>
+                    <span class="dd-tag">Evolution</span>
+                </div>
+                <div class="dd-body">
+                    <div class="rag-comparison">
+                        <div class="rag-type rag-traditional">
+                            <h4>Traditional RAG</h4>
+                            <div class="rag-flow">
+                                <div class="rag-step">Query</div>
+                                <div class="rag-arrow">&darr;</div>
+                                <div class="rag-step">Vector Search</div>
+                                <div class="rag-arrow">&darr;</div>
+                                <div class="rag-step">Retrieve Docs</div>
+                                <div class="rag-arrow">&darr;</div>
+                                <div class="rag-step">Generate Answer</div>
+                            </div>
+                            <p class="rag-desc">단일 패스. 검색 결과가 부족해도 재시도 없음. 도서관에서 책 한 권 빌리는 것과 같음.</p>
+                        </div>
+                        <div class="rag-vs">vs</div>
+                        <div class="rag-type rag-agentic">
+                            <h4>Agentic RAG</h4>
+                            <div class="rag-flow rag-flow-loop">
+                                <div class="rag-step">Plan</div>
+                                <div class="rag-arrow">&darr;</div>
+                                <div class="rag-step">Retrieve</div>
+                                <div class="rag-arrow">&darr;</div>
+                                <div class="rag-step">Evaluate</div>
+                                <div class="rag-arrow rag-arrow-loop">&darr; / &#8634;</div>
+                                <div class="rag-step">Re-retrieve / Tool Use</div>
+                                <div class="rag-arrow">&darr;</div>
+                                <div class="rag-step">Synthesize</div>
+                            </div>
+                            <p class="rag-desc">반복적 검색, 평가, 재검색. 연구 조교가 여러 자료를 찾아 교차 검증하는 것과 같음.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guardrails -->
+            <div class="deep-dive-card">
+                <div class="dd-header">
+                    <h3>Guardrails 아키텍처</h3>
+                    <span class="dd-tag">Safety</span>
+                </div>
+                <div class="dd-body">
+                    <p>가드레일은 <strong>계층적 방어(Layered Defense)</strong> 원칙으로 설계됩니다. 하나의 가드레일로 모든 것을 잡을 수 없습니다.</p>
+                    <div class="guardrails-arch">
+                        <div class="guardrail-layer">
+                            <div class="guardrail-label">Input Guardrails</div>
+                            <div class="guardrail-items">
+                                <span>PII 감지</span>
+                                <span>Prompt Injection 방어</span>
+                                <span>유해성 필터링</span>
+                            </div>
+                        </div>
+                        <div class="guardrail-arrow">&darr;</div>
+                        <div class="guardrail-core">
+                            <span>Agent Core (LLM + Tools)</span>
+                        </div>
+                        <div class="guardrail-arrow">&darr;</div>
+                        <div class="guardrail-layer">
+                            <div class="guardrail-label">Output Guardrails</div>
+                            <div class="guardrail-items">
+                                <span>할루시네이션 탐지</span>
+                                <span>콘텐츠 검수</span>
+                                <span>PII 제거</span>
+                            </div>
+                        </div>
+                        <div class="guardrail-side">
+                            <div class="guardrail-label">Tool Guardrails</div>
+                            <div class="guardrail-items">
+                                <span>실행 전 검증</span>
+                                <span>권한 확인</span>
+                                <span>Human-in-the-Loop</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cost Optimization -->
+            <div class="deep-dive-card">
+                <div class="dd-header">
+                    <h3>비용 최적화 전략</h3>
+                    <span class="dd-tag">Production</span>
+                </div>
+                <div class="dd-body">
+                    <p>에이전트 루프는 단일 호출 대비 10~100배 더 많은 토큰을 소비할 수 있습니다. 주요 최적화 전략:</p>
+                    <div class="cost-strategies">
+                        <div class="cost-item">
+                            <div class="cost-bar" style="--width: 80%">
+                                <span class="cost-label">Prompt Caching</span>
+                                <span class="cost-savings">60-80% 절감</span>
+                            </div>
+                            <p>캐시된 토큰은 75% 저렴. 시스템 프롬프트, 도구 스키마 재사용</p>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-bar" style="--width: 60%">
+                                <span class="cost-label">Multi-Model Routing</span>
+                                <span class="cost-savings">30-60% 절감</span>
+                            </div>
+                            <p>단순 작업은 저렴한 모델, 복잡한 추론만 고급 모델 사용</p>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-bar" style="--width: 50%">
+                                <span class="cost-label">Batch Processing</span>
+                                <span class="cost-savings">~50% 절감</span>
+                            </div>
+                            <p>비동기 배치 처리로 할인 적용 (OpenAI, Google, Mistral)</p>
+                        </div>
+                        <div class="cost-item">
+                            <div class="cost-bar" style="--width: 40%">
+                                <span class="cost-label">Prompt Engineering</span>
+                                <span class="cost-savings">15-40% 절감</span>
+                            </div>
+                            <p>간결한 프롬프트, JSON 구조화 출력, 사용하지 않는 도구 제거</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Protocols Section -->
+    <section class="section section-dark" id="protocols">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Protocols</span>
+                <h2 class="section-title">에이전트 통신 프로토콜</h2>
+                <p class="section-desc">에이전트 생태계를 연결하는 두 가지 핵심 프로토콜</p>
+            </div>
+
+            <div class="protocols-layout">
+                <div class="protocol-card protocol-mcp">
+                    <div class="protocol-header">
+                        <div class="protocol-logo">MCP</div>
+                        <div>
+                            <h3>Model Context Protocol</h3>
+                            <span class="protocol-by">by Anthropic (Nov 2024)</span>
+                        </div>
+                    </div>
+                    <div class="protocol-body">
+                        <div class="protocol-direction">
+                            <span class="protocol-dir-label">Vertical</span>
+                            <span>Agent &harr; Tools & Data</span>
+                        </div>
+                        <p>에이전트가 외부 도구와 데이터에 접근하는 방법을 표준화합니다. N x M 통합 문제를 M + N으로 줄입니다.</p>
+                        <div class="protocol-primitives">
+                            <div class="primitive">
+                                <strong>Tools</strong>
+                                <span>LLM이 호출할 수 있는 함수</span>
+                            </div>
+                            <div class="primitive">
+                                <strong>Resources</strong>
+                                <span>접근할 수 있는 데이터 소스</span>
+                            </div>
+                            <div class="primitive">
+                                <strong>Prompts</strong>
+                                <span>최적 사용을 위한 템플릿</span>
+                            </div>
+                        </div>
+                        <div class="protocol-tech">JSON-RPC 2.0 | stdio / HTTP+SSE</div>
+                    </div>
+                </div>
+
+                <div class="protocol-card protocol-a2a">
+                    <div class="protocol-header">
+                        <div class="protocol-logo">A2A</div>
+                        <div>
+                            <h3>Agent-to-Agent Protocol</h3>
+                            <span class="protocol-by">by Google (Apr 2025)</span>
+                        </div>
+                    </div>
+                    <div class="protocol-body">
+                        <div class="protocol-direction">
+                            <span class="protocol-dir-label">Horizontal</span>
+                            <span>Agent &harr; Agent</span>
+                        </div>
+                        <p>에이전트 간 작업을 위임하고 결과를 교환하는 방법을 표준화합니다. Agent Card로 능력을 광고합니다.</p>
+                        <div class="protocol-primitives">
+                            <div class="primitive">
+                                <strong>Agent Cards</strong>
+                                <span>능력 광고 JSON 문서</span>
+                            </div>
+                            <div class="primitive">
+                                <strong>Tasks</strong>
+                                <span>작업 단위 & 라이프사이클</span>
+                            </div>
+                            <div class="primitive">
+                                <strong>Messages</strong>
+                                <span>컨텍스트, 결과, 아티팩트 교환</span>
+                            </div>
+                        </div>
+                        <div class="protocol-tech">HTTP + JSON | SSE Streaming | Apache 2.0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="protocol-relationship">
+                <div class="protocol-rel-diagram">
+                    <div class="rel-box rel-mcp">
+                        <strong>MCP</strong>
+                        <span>Agent &harr; Tools</span>
+                    </div>
+                    <div class="rel-connector">
+                        <span>Complementary</span>
+                    </div>
+                    <div class="rel-box rel-a2a">
+                        <strong>A2A</strong>
+                        <span>Agent &harr; Agent</span>
+                    </div>
+                </div>
+                <p class="protocol-rel-note">두 프로토콜은 경쟁이 아닌 <strong>상호 보완</strong> 관계입니다. 2025년 12월 Linux Foundation의 AAIF(Agentic AI Foundation)에서 OpenAI, Anthropic, Google, Microsoft, AWS가 공동 거버넌스에 합류했습니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practice Section -->
+    <section class="section" id="practice">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Practice</span>
+                <h2 class="section-title">실무 가이드</h2>
+                <p class="section-desc">에이전트를 성공적으로 구축하고 운영하기 위한 실전 지침</p>
+            </div>
+
+            <!-- Frameworks Comparison -->
+            <div class="frameworks-section">
+                <h3 class="subsection-title">주요 프레임워크 비교</h3>
+                <div class="frameworks-grid">
+                    <div class="fw-card">
+                        <div class="fw-header">
+                            <h4>LangGraph</h4>
+                            <span class="fw-badge">Graph-based</span>
+                        </div>
+                        <p>그래프 기반 워크플로우. 노드가 액션, 엣지가 흐름을 정의. 중앙집중식 상태 관리.</p>
+                        <div class="fw-features">
+                            <span>Durable Execution</span>
+                            <span>Human-in-the-Loop</span>
+                            <span>조건부 분기</span>
+                        </div>
+                        <div class="fw-best">적합: 복잡한 워크플로우가 필요한 프로덕션 시스템</div>
+                    </div>
+                    <div class="fw-card">
+                        <div class="fw-header">
+                            <h4>CrewAI</h4>
+                            <span class="fw-badge">Role-based</span>
+                        </div>
+                        <p>역할 기반 멀티 에이전트. 각 에이전트에게 Role, Goal, Backstory를 부여.</p>
+                        <div class="fw-features">
+                            <span>Hierarchical</span>
+                            <span>역할 전문화</span>
+                            <span>작업 위임</span>
+                        </div>
+                        <div class="fw-best">적합: 팀 시뮬레이션, 다양한 관점이 필요한 작업</div>
+                    </div>
+                    <div class="fw-card">
+                        <div class="fw-header">
+                            <h4>AutoGen</h4>
+                            <span class="fw-badge">Event-driven</span>
+                        </div>
+                        <p>비동기 이벤트 기반 아키텍처. Actor 모델 기반 메시지 교환.</p>
+                        <div class="fw-features">
+                            <span>Cross-language</span>
+                            <span>분산 네트워크</span>
+                            <span>OpenTelemetry</span>
+                        </div>
+                        <div class="fw-best">적합: 엔터프라이즈급, 분산 에이전트 시스템</div>
+                    </div>
+                    <div class="fw-card">
+                        <div class="fw-header">
+                            <h4>Google ADK</h4>
+                            <span class="fw-badge">Code-first</span>
+                        </div>
+                        <p>코드 우선 개발. Runner 중심 설계, 이벤트 스트리밍.</p>
+                        <div class="fw-features">
+                            <span>Model-agnostic</span>
+                            <span>Built-in Eval</span>
+                            <span>Vertex AI 배포</span>
+                        </div>
+                        <div class="fw-best">적합: Google Cloud 환경, 스트리밍이 중요한 앱</div>
+                    </div>
+                    <div class="fw-card">
+                        <div class="fw-header">
+                            <h4>OpenAI Agents SDK</h4>
+                            <span class="fw-badge">Minimal</span>
+                        </div>
+                        <p>의도적으로 미니멀한 Python 네이티브 접근. 세 가지 원시 타입.</p>
+                        <div class="fw-features">
+                            <span>Handoffs</span>
+                            <span>Guardrails</span>
+                            <span>Built-in Tracing</span>
+                        </div>
+                        <div class="fw-best">적합: 빠른 프로토타이핑, 단순한 에이전트 시스템</div>
+                    </div>
+                    <div class="fw-card">
+                        <div class="fw-header">
+                            <h4>Claude Code</h4>
+                            <span class="fw-badge">Terminal Agent</span>
+                        </div>
+                        <p>단일 스레드 마스터 루프 + sub-agent 병렬 실행. ~40개 도구, 권한 게이트.</p>
+                        <div class="fw-features">
+                            <span>1M Context</span>
+                            <span>Permission Gate</span>
+                            <span>Sub-agents</span>
+                        </div>
+                        <div class="fw-best">적합: 코드베이스 작업, 복잡한 멀티파일 변경</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Mistakes -->
+            <div class="mistakes-section">
+                <h3 class="subsection-title">에이전트 구축 시 흔한 실수 Top 10</h3>
+                <p class="subsection-desc">88%의 AI 에이전트 프로젝트가 프로덕션 전에 실패합니다. 주요 원인:</p>
+                <div class="mistakes-grid">
+                    <div class="mistake-item">
+                        <span class="mistake-num">01</span>
+                        <div>
+                            <h5>과도한 엔지니어링</h5>
+                            <p>단순 LLM + 프롬프팅으로 충분한데 복잡한 멀티 에이전트 프레임워크를 도입</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">02</span>
+                        <div>
+                            <h5>데이터 품질 무시</h5>
+                            <p>불완전한 데이터 파이프라인 위에 에이전트를 구축</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">03</span>
+                        <div>
+                            <h5>평가 프레임워크 부재</h5>
+                            <p>AI 팀의 15%만이 포괄적 평가를 수행</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">04</span>
+                        <div>
+                            <h5>관찰 도구 누락</h5>
+                            <p>프로덕션 에이전트의 5%만 성숙한 모니터링 보유</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">05</span>
+                        <div>
+                            <h5>RPA처럼 취급</h5>
+                            <p>"구축-배포-방치" 접근은 실패. 지속적 개선 필요</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">06</span>
+                        <div>
+                            <h5>도구 과다 등록</h5>
+                            <p>모든 도구 정의가 토큰을 소비. 사용하지 않는 도구 제거 필요</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">07</span>
+                        <div>
+                            <h5>Human-in-the-Loop 부재</h5>
+                            <p>중요한 결정을 완전 자동화하면 사고 위험 증가</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">08</span>
+                        <div>
+                            <h5>비용 관리 실패</h5>
+                            <p>에이전트 루프는 단일 호출의 10-100배 토큰 소비 가능</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">09</span>
+                        <div>
+                            <h5>부실한 도구 문서화</h5>
+                            <p>도구 설명은 UX 디자인만큼 중요 (Anthropic 권고)</p>
+                        </div>
+                    </div>
+                    <div class="mistake-item">
+                        <span class="mistake-num">10</span>
+                        <div>
+                            <h5>종료 조건 미설정</h5>
+                            <p>exit criteria 없는 자율 에이전트는 무한 루프 가능</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Stats -->
+            <div class="stats-section">
+                <h3 class="subsection-title">주요 통계</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">88%</div>
+                        <div class="stat-desc">에이전트 프로젝트가 프로덕션 전 실패</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">1,445%</div>
+                        <div class="stat-desc">멀티 에이전트 문의 증가율 (Gartner, Q1'24&rarr;Q2'25)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">85%</div>
+                        <div class="stat-desc">개발자가 AI 코딩 도구 사용 (2025)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$2.1M</div>
+                        <div class="stat-desc">AI 보안 통제 적용 시 평균 비용 절감</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">80.9%</div>
+                        <div class="stat-desc">SWE-bench Verified 최고 점수 (Claude Opus)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">33%</div>
+                        <div class="stat-desc">2028년까지 에이전트 AI 포함 예측 (Gartner)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Practical Advice -->
+            <div class="advice-section">
+                <h3 class="subsection-title">실무 권장 사항</h3>
+                <div class="advice-card">
+                    <div class="advice-icon">1</div>
+                    <div>
+                        <h4>Simple First</h4>
+                        <p>Anthropic, OpenAI 모두 동일하게 권장: <strong>단순하게 시작하세요.</strong> Level 2-3으로 대부분의 문제를 해결할 수 있습니다. Level 4 이상은 정말 복잡한 open-ended 작업에만 필요합니다.</p>
+                    </div>
+                </div>
+                <div class="advice-card">
+                    <div class="advice-icon">2</div>
+                    <div>
+                        <h4>Evaluate Early</h4>
+                        <p>평가 프레임워크를 먼저 구축하세요. LLM-as-Judge, 자동화된 벤치마크, A/B 테스팅을 조합합니다. <strong>측정할 수 없으면 개선할 수 없습니다.</strong></p>
+                    </div>
+                </div>
+                <div class="advice-card">
+                    <div class="advice-icon">3</div>
+                    <div>
+                        <h4>Human-in-the-Loop</h4>
+                        <p>중요한 결정에는 항상 인간 승인을 포함하세요. <strong>신뢰가 쌓이면 점진적으로 자율성을 확대</strong>합니다. 처음부터 완전 자동화를 목표로 하지 마세요.</p>
+                    </div>
+                </div>
+                <div class="advice-card">
+                    <div class="advice-icon">4</div>
+                    <div>
+                        <h4>Observe Everything</h4>
+                        <p>LangSmith, Braintrust, 또는 OpenTelemetry로 <strong>모든 에이전트 액션을 추적</strong>하세요. 프로덕션 에이전트의 62%가 관찰 도구 개선을 최우선 과제로 꼽았습니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Papers & References -->
+    <section class="section section-dark" id="papers">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">References</span>
+                <h2 class="section-title">핵심 논문 & 자료</h2>
+                <p class="section-desc">에이전트 분야의 필수 논문과 자료 모음</p>
+            </div>
+
+            <div class="papers-grid">
+                <div class="paper-card paper-foundational">
+                    <div class="paper-type">Foundational</div>
+                    <h4>ReAct: Synergizing Reasoning and Acting</h4>
+                    <p class="paper-authors">Yao et al. (Princeton, Google) | ICLR 2023</p>
+                    <p class="paper-desc">에이전트 루프의 근간. Thought-Action-Observation 패턴을 제안. HotpotQA에서 할루시네이션을 극복하고, ALFWorld에서 34% 절대 성공률 향상.</p>
+                    <div class="paper-tags">
+                        <span>Level 4</span>
+                        <span>Agent Loop</span>
+                    </div>
+                </div>
+
+                <div class="paper-card paper-foundational">
+                    <div class="paper-type">Foundational</div>
+                    <h4>Chain-of-Thought Prompting</h4>
+                    <p class="paper-authors">Wei et al. (Google) | NeurIPS 2022</p>
+                    <p class="paper-desc">단계별 추론 능력의 시작. 540B 모델에서 8개 CoT 예시로 GSM8K SOTA 달성. 100B+ 파라미터에서 발현하는 창발적 능력.</p>
+                    <div class="paper-tags">
+                        <span>Level 0</span>
+                        <span>Reasoning</span>
+                    </div>
+                </div>
+
+                <div class="paper-card paper-foundational">
+                    <div class="paper-type">Foundational</div>
+                    <h4>Toolformer</h4>
+                    <p class="paper-authors">Schick et al. (Meta AI) | Feb 2023</p>
+                    <p class="paper-desc">LLM이 자기 감독 방식으로 도구 사용을 학습. 어떤 API를, 언제, 어떤 인자로 호출할지 스스로 결정.</p>
+                    <div class="paper-tags">
+                        <span>Level 1</span>
+                        <span>Tool Use</span>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <div class="paper-type">Advanced</div>
+                    <h4>Generative Agents: Interactive Simulacra</h4>
+                    <p class="paper-authors">Park et al. (Stanford) | UIST 2023</p>
+                    <p class="paper-desc">25명의 에이전트가 Sims 같은 마을에서 생활. Observation-Reflection-Retrieval 아키텍처로 인간과 유사한 사회적 행동을 시연.</p>
+                    <div class="paper-tags">
+                        <span>Level 5-6</span>
+                        <span>Memory</span>
+                        <span>Social</span>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <div class="paper-type">Advanced</div>
+                    <h4>Reflexion</h4>
+                    <p class="paper-authors">Shinn et al. | NeurIPS 2023</p>
+                    <p class="paper-desc">언어적 자기 반성을 통한 학습. 가중치 업데이트 없이 시행착오에서 배움. HumanEval 67%&rarr;88% pass@1 달성.</p>
+                    <div class="paper-tags">
+                        <span>Level 4</span>
+                        <span>Self-Improvement</span>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <div class="paper-type">Advanced</div>
+                    <h4>Tree of Thoughts</h4>
+                    <p class="paper-authors">Yao et al. (Princeton) | NeurIPS 2023</p>
+                    <p class="paper-desc">CoT를 일반화한 탐색 기반 추론. BFS/DFS로 사고 트리를 탐색. Game of 24: CoT 4% &rarr; ToT 74%.</p>
+                    <div class="paper-tags">
+                        <span>Level 2-3</span>
+                        <span>Planning</span>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <div class="paper-type">System Design</div>
+                    <h4>MRKL Systems</h4>
+                    <p class="paper-authors">Karpas et al. (AI21 Labs) | May 2022</p>
+                    <p class="paper-desc">뉴로-심볼릭 아키텍처의 이론적 기반. 라우터가 입력을 적절한 모듈(LLM, 계산기, DB, API)로 전달.</p>
+                    <div class="paper-tags">
+                        <span>Level 1-2</span>
+                        <span>Router</span>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <div class="paper-type">System Design</div>
+                    <h4>HuggingGPT</h4>
+                    <p class="paper-authors">Shen et al. | NeurIPS 2023</p>
+                    <p class="paper-desc">ChatGPT를 컨트롤러로 사용해 Hugging Face의 전문 모델들을 오케스트레이션. 멀티모달 작업 처리의 선구자.</p>
+                    <div class="paper-tags">
+                        <span>Level 5</span>
+                        <span>Orchestration</span>
+                    </div>
+                </div>
+
+                <div class="paper-card paper-industry">
+                    <div class="paper-type">Industry</div>
+                    <h4>Building Effective Agents</h4>
+                    <p class="paper-authors">Schluntz & Zhang (Anthropic) | Dec 2024</p>
+                    <p class="paper-desc">실무에서 가장 영향력 있는 가이드. 6가지 조합 가능한 패턴과 "단순하게 시작하라"는 철학.</p>
+                    <div class="paper-tags">
+                        <span>All Levels</span>
+                        <span>Best Practice</span>
+                    </div>
+                </div>
+
+                <div class="paper-card paper-industry">
+                    <div class="paper-type">Industry</div>
+                    <h4>LLM Powered Autonomous Agents</h4>
+                    <p class="paper-authors">Lilian Weng (OpenAI) | Jun 2023</p>
+                    <p class="paper-desc">Agent = LLM + Memory + Planning + Tools. 에이전트 아키텍처의 사실상 표준 레퍼런스.</p>
+                    <div class="paper-tags">
+                        <span>All Levels</span>
+                        <span>Architecture</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benchmarks -->
+            <div class="benchmarks-section">
+                <h3 class="subsection-title">주요 벤치마크</h3>
+                <div class="benchmarks-grid">
+                    <div class="benchmark-card">
+                        <h4>SWE-bench Verified</h4>
+                        <p>실제 GitHub 이슈 해결 능력 평가. 실무 코딩 에이전트의 핵심 지표.</p>
+                        <div class="benchmark-score">Top: ~80.9%</div>
+                    </div>
+                    <div class="benchmark-card">
+                        <h4>GAIA</h4>
+                        <p>인간에게는 쉽지만 AI에겐 멀티모달 도구 사용이 필요한 작업 평가.</p>
+                        <div class="benchmark-score">Tool Use + Reasoning</div>
+                    </div>
+                    <div class="benchmark-card">
+                        <h4>AgentBench</h4>
+                        <p>시뮬레이션된 OS 환경에서의 에이전트 작업 수행 능력 평가.</p>
+                        <div class="benchmark-score">Multi-Environment</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <div class="footer-logo">
+                        <span class="nav-logo-icon">A</span>
+                        <span>AI Agent Guide</span>
+                    </div>
+                    <p>단순 LLM 호출부터 멀티 에이전트 시스템까지, AI Agent의 모든 것을 다루는 가이드입니다.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>References</h4>
+                    <ul>
+                        <li>Anthropic - Building Effective Agents (2024)</li>
+                        <li>Lilian Weng - LLM Powered Autonomous Agents (2023)</li>
+                        <li>ReAct: Yao et al. (ICLR 2023)</li>
+                        <li>Generative Agents: Park et al. (UIST 2023)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Built for education. Last updated: 2026-04-04.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
