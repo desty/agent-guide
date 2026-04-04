@@ -176,6 +176,29 @@ code {
     border-radius: 1px;
 }
 
+/* ===== LANG TOGGLE ===== */
+.lang-toggle {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: 12px;
+    flex-shrink: 0;
+}
+
+.lang-toggle:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+    border-color: var(--blue);
+}
+
 .nav-toggle {
     display: none;
     background: none;
