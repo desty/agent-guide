@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:www.anthropic.com)",
+      "WebFetch(domain:google.github.io)",
+      "WebFetch(domain:adk.dev)",
+      "WebFetch(domain:openai.github.io)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(gh auth:*)",
+      "Bash(git --version)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(/opt/homebrew/bin/gh auth:*)",
+      "Bash(/opt/homebrew/bin/gh repo:*)",
+      "Bash(/opt/homebrew/bin/gh api:*)",
+      "Bash(cat /Users/desty/Documents/_work/vibework/rag/.github/workflows/*.yml)",
+      "Bash(git push:*)"
+    ]
+  }
+}
